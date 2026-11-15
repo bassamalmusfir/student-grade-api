@@ -1,0 +1,14 @@
+# Build output - rebuilt inside the image
+ target/
+
+# Git history - not needed at runtime
+.git/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Logs and OS junk
+*.log
+.DS_Store

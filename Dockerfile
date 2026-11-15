@@ -1,0 +1,19 @@
+# ----- Stage 1: build the JAR with Maven + JDK -----
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+
+# Copy pom.xml first so Docker can cache the dependency layer
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# ----- Stage 2: run the JAR on a small JRE image -----
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# Copy the JAR FROM the build stage (not from your machine)
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
