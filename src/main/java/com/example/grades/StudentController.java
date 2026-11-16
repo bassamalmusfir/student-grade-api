@@ -34,7 +34,10 @@ public class StudentController {
     public Student add(@RequestBody Student s) {
         s.setId((long) (students.size() + 1));
         students.add(s);
-        logger.info("Added student: id={}, name={}", s.getId(), s.getName());
+        String safeName = s.getName() == null
+            ? "unknown"
+            : s.getName().replaceAll("[\\r\\n]", "_");
+        logger.info("Added student: id={}, name={}", s.getId(), safeName);
         return s;
     }
 
